@@ -2,7 +2,7 @@ import "lodash";
 import { alert } from "@pnotify/core";
 import "@pnotify/core/dist/BrightTheme.css";
 import "@pnotify/core/dist/PNotify.css";
-import { xor } from "lodash";
+import "./styles.css"
 
 class CountryInfo {
   constructor(uri, refs) {
@@ -10,11 +10,62 @@ class CountryInfo {
     this.refs = refs;
   }
 
+  createTable(data) {
+    let table = document.createElement('table');
+    table.classList.add("table");
+
+    let tableBody = document.createElement('tbody');
+    tableBody.classList.add("table__body");
+  
+      let row1 = document.createElement('tr');
+      row1.innerHTML += `<td>Country:</td>`;
+      row1.innerHTML += `<td>${data.name.official}</td>`;
+      tableBody.append(row1);
+
+      let row2 = document.createElement('tr');
+      row2.innerHTML += `<td>Capital:</td>`;
+      row2.innerHTML += `<td>${data.capital[0]}</td>`;
+      tableBody.append(row2);
+
+      let row3 = document.createElement('tr');
+      row3.innerHTML += `<td>Population:</td>`;
+      row3.innerHTML += `<td>${data.population}</td>`;
+      tableBody.append(row3);
+
+      let row4 = document.createElement('tr');
+      row4.innerHTML += `<td>Languages:</td>`;
+      let langArray = Object.values(data.languages);
+      if(langArray.length === 1){
+        row4.innerHTML += `<td>${langArray[0]}</td>`;
+      } else {
+        let str = langArray.map(language =>language);
+        row4.innerHTML += `<td>${str}</td>`;
+      }
+
+      tableBody.append(row4);
+
+      let row5 = document.createElement('tr');
+      row5.innerHTML += `<td>Flag:</td>`;
+      row5.innerHTML += `<td><img src=${data.flags.png} alt="Flag image"</td>`;
+      tableBody.append(row5);
+
+      let row6 = document.createElement('tr');
+      row6.innerHTML += `<td>Coat of Arms:</td>`;
+      row6.innerHTML += `<td><img src=${data.coatOfArms.png} alt="Flag image"</td>`;
+      tableBody.append(row6);
+
+      table.append(tableBody);
+
+      this.refs.dataRef.append(table);
+     }
+
   // название, столица, население, языки и флаг.
   renderInfo = (info) => {
-    let data = info[0];
-
+    // let data = info[0];
     this.refs.dataRef.innerHTML = "";
+
+    this.createTable(info[0]);
+/*
     // название страны
     let contryName = document.createElement("h1");
     contryName.textContent = data.name.official;
@@ -50,6 +101,7 @@ class CountryInfo {
     coatOfArmsImg.src = data.coatOfArms.png;
     coatOfArmsImg.alt = "Coat of arms image";
     this.refs.dataRef.append(coatOfArmsImg);
+*/
   };
 
   fetchCountryInfo = (inputValue) => {
