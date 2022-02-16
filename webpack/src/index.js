@@ -68,14 +68,13 @@ class CountryInfo {
     let ul = document.createElement("ul");
     let dataItems = dataArr.map(({ name }) => {
       let li = document.createElement("li");
-      // let a = document.createElement("a");
+      let a = document.createElement("a");
       let h2 = document.createElement("h2");
 
-      // a.href = "";
+      a.href = "";
       h2.textContent = name.common;
-      // a.append(h2);
-      // li.append(a);
-      li.append(h2);
+      a.append(h2);
+      li.append(a);
 
       return li;
     });
@@ -134,11 +133,20 @@ class CountryInfo {
     }
   };
 
+  onRefClick = (event) => {
+    event.preventDefault();
+    if (event.target.nodeName !== "H2") {
+      return;
+    }
+    this.fetchCountryInfo(event.target.innerHTML);
+  };
+
   loadListeners() {
     this.refs.inputSearchByName.addEventListener(
       "input",
       _.debounce(this.onInputCountryName, 500)
     );
+    this.refs.dataRef.addEventListener("click", this.onRefClick);
   }
 
   init = () => {
